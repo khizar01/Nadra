@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>X-Charger</title>
+    <!-- css -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- google fonts  -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+
+    <!-- jquery for sliding motion  -->
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+    <!-- font awesome icons which are used for charing points on the main page of the website -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Load CSS for Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"/>
+
+    <!-- Load JavaScript for Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+
+
+ <!-- Load Leaflet from CDN-->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.2.0"></script>
+
+  <!-- Load Esri Leaflet from CDN -->
+  <script src="https://unpkg.com/esri-leaflet@2.1.1"></script>
+
+  <!-- Leaflet Shape Markers.. These mar -->
+  <!-- <script src="https://unpkg.com/leaflet-shape-markers@1.0.6"></script> -->
+
+  <!-- Add Firebase to your web app to collect data from the markers -->
+    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
+
+  <!-- Esri Leaflet GP. This is quick and faster service that I experimented with-->
+  <script src="https://unpkg.com/esri-leaflet-gp@2.0.3"></script>
+
+  <!-- Esri Leaflet Geocoder, this marker the location of each point clicked on the map..useful for knowing the start point -->
+  <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.2.9/dist/esri-leaflet-geocoder.css">
+  <script src="https://unpkg.com/esri-leaflet-geocoder@2.2.8"></script>
+
+
+
+ <!-- font awesome icons font awesome icons which i used for the website charging points icon at the top of the web page  -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+  <!-- TurfJS for circle buffer 1-mile radius -->
+  <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+
+
+    <!-- font awesomecons which i used for the website charing points icon at the top of the web page -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<!-- Style the buttons and all CSS properties plugins. E.g. the style of the bindPopups.  -->
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+<!-- Load the data for car charging points -->
+ <script src="Points.js"></script>
+ 
+
+
+
+
+</head>
+<body onload="initMap();">
+
+
+<!-- This is main menu located at the top of the page. # refers to the hyperlink tags which are connected with divs -->
+      <header> <!--Open the header-->
+            <nav class="menu"> <!--Open navigation tag-->
+                  <ul class="menu">
+                        <li>
+                              <a href="#home">Home</a> <!--For home-->
+                        </li>
+                        <li>
+                              <a href="#overview">Overview</a> <!--For overviw section etc-->
+                        </li>
+                        <li>
+                              <a href="#Buttons">The Map</a>
+                        </li>
+                        <li>
+                              <a href="#about">About</a>
+                        </li>
+                  </ul>
+                  <a href="#" id="toggle-btn">WholeManu</a>
+            </nav>
+      </header> <!--Close the header-->
+
+      <!-- content -->
+<!-- This is the section for home page with short details and icon from awesome icons in <i> tags. -->
+      <a name="home"></a>
+        <div class="section-hero">
+             <div class="container">
+                      <h1>Welcome to X-Charger</h1>
+                      <h2><i class="fas fa-charging-station"></i>Live sustainbly, find your nearst electronic car charging points in York and Causeway Coast and Glens</h2>
+                      <p>Filling up with fuel is easy, charging an electric car, however, seems a lot more complicated - but why?
+                      From the different connectors to consider, variable rates of charge and different places to recharge your EV It can seem like a complex job.</p>
+             </div>
+      </div>
+
+      <!-- overview section -->
+
+      <a name="overview"></a>
+      <div id="overview" class="section">
+            <div class="container">
+                  <div class="overview-content">
+
+                  <div>
+                        <h2>Overview</h2>
+                        <p> Short Guide to Charging Points</p>
+                        <p></p><p>Slow charging. Rate: 3kW. If you charge your car from ‘empty’ (either at home or at a station), a full slow charge will take around eight hours. Fast charging. Rate: 7-22kW. A fast charging point will take around three to four hours to fully replenish an electric car’s batteries from zero charge. The majority of public charging stations offer this rate, and you can also have a fast charge box installed at home. </p>
+                        <p>
+                       Rapid charging. Rate: 43-50kW. Only a few electric cars are compatible with rapid charging, but if you own a car such as the Tesla Model S or Kia Soul EV, a rapid charger will give you an 80% charge in as little as 30 minutes. Public charging points that offer rapid charging aren’t as common as fast chargers (Zap-Map puts their numbers at just under 1,000), but Tesla has its own proprietary network for use exclusively with its cars ></p>
+
+                       <p>Not all cars have the same types of charging connector, although there aren’t that many varieties. There are two connectors to consider: the one that plugs into your car, and the one that connects to the power source. While slow chargers at home plug into a standard three-pin socket (and sometimes an industrial socket like the one caravans and builders use), most public charging points have their own lead tethered to the station, so we’ll focus on the end that connects to the car. Infomation about connectors can be found by clicking on the charing icons in the Map</p>
+                        <button type="button"><a href ="#map">View the Map</a></button>
+                  </div>
+
+                  <div>  <img src="overview.jpg" alt="">
+                         <img src="features1.png">
+                       
+                        
+                  </div>
+
+                  </div>
+            </div>
+      </div>
+
+      <!-- about section       -->
+
+
+      <div id="about" class="section">
+            <div class="container">
+                  <h2>
+                        <i class="fas fa-battery-full"></i> X-Charger
+                  </h2>
+                  <h3>Find the nearest charging point</h3>
+                  <p>The network of public chargers continues to grow at an incredible rate, with Zap-Map reporting a total of 14,117 connectors at 4,935 different locations at the time of writing (9 November 2017).The interative map is used for two purposes, to collect data based on the markers and provide the closest electric charging point</p>
+                
+                  <img src="about.png" alt="">
+            </div>
+      </div>
+
+  
+
+   <!-- This section holds the map div -->
+<div id= "map" class="section"></div>
+
+<!-- This section links with the text that appears on the map when a marker is placed -->
+   <div id='info-box'>
+                    <ul id='info-list'>
+                       <li id='startWith'></li>
+                       <li id='startEnd'>
+                    <i= id ="text"></i>
+            </li> 
+     </ul>
+  </div> 
+  
+
+
+<!-- !-- This links with the buttons located above the map --> 
+    <div id="Buttons">
+      <!-- Link the button to the onclick event below. Each button responds to the function that is described in javascript using e.g. 'showPoints' -->
+             <button type="button" id="BtnPoints" onclick="showPoints(this);" class="btn btn-success">Show toilets</button>
+              <button type="button" id="BtnAll" onclick="showPoints(this);" class="btn btn-success">Hide</button>
+
+<!-- The buttons for flyTo different place See the function below -->
+             <button  onClick="York()"> Go to York</button>
+             <button  onClick="Bristol()">Causeway Coast and Glens</button>
+    </div> <!--division closes-->
+
+
+
+
+<!-- Start Javascript with the script tags -->
+<script>
+      
+      //setup global map variable
+         var map, geojson;
+        
+      /**
+       * Initialise the Map
+       */
+        function initMap(){
+         initDb();
+        
+        // this is a variable that holds the reference to the Leaflet map object
+        map = L.map('map').setView([53.956251, -1.091064], 13);   //this will give a map of Great Britain
+      
+         // this adds the basemap tiles to the map
+         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+         }).addTo(map);  
+       
+
+// L.feature group makes it easier to do the same thing to all its member layers, so if the group has an event handler, it will handle events from any of the layers. This includes mouse events and custom events.
+     var routesLayer = L.featureGroup();
+     var selectionLayer = L.featureGroup();
+     var searchBuffer = L.featureGroup();
+     var searchLayer = L.featureGroup();
+     var endLayer = L.featureGroup();
+
+ 
+
+
+
+  // Add layers./ These layers are empty for now and they are  assigned functions below
+        map.addLayer(routesLayer);
+  // First Add route layer so that route can be assigned
+        map.addLayer(selectionLayer);
+  // This 
+        map.addLayer(searchLayer);
+
+  // map.addLayer(endLayer);
+
+// This EcarIcon is called in the PoIstile function: iconURL is just the image. 
+   let EcarIcon = L.icon({
+       iconUrl: 'battery.png', 
+       iconSize: [40, 40], //Size of the icon
+       iconAnchor: [20, 20] //Where the icon is placed.//
+});
+   
+// This function is used to return the marker icon on feature and coordinates
+   function PoIstile (feature,latlng) {
+      return L.marker(latlng, {icon: EcarIcon})
+};
+
+ 
+
+ // Add all the car charging points to the map
+  var pointsLayer = L.geoJSON(points, {
+          pointToLayer: PoIstile,
+          // The onEachFeature option is a function that gets called on each feature before adding it to a GeoJSON layer whereas pointToLayer can easily return a marker or circleMarker. 
+          onEachFeature: function (f, l) {
+  l.bindPopup('<pre>'+JSON.stringify(f.properties,null,' ').replace(/[\{\}"]/g,'')+'</pre>');
+  // This attaches the popup when the marker is clicked based on the information that is added in the dataset. This is good when the information needed to be displayed on the map is short (which was editted in QGIS)
+}
+// Add it to the map
+}).addTo(map);
+
+
+  // use a service proxy to authenticate...This allows to use the rroutig service from the ESRI
+  // https://developers.arcgis.com/authentication/working-with-proxies/
+  var closestFacilityService = L.esri.GP.service({
+       url:
+      "https://utility.arcgis.com/usrsvcs/appservices/FnVYYTap8ykTDC1m/rest/services/World/ClosestFacility/NAServer/ClosestFacility_World",
+       path: "solveClosestFacility"
+});
+  var closestFacilityTask = closestFacilityService.createTask();
+  // Set the paramters for what kind of route is needed
+  closestFacilityTask.setParam("returnCFRoutes", true);
+
+
+
+
+  // when someone clicks on the map, find the route to the nearest charing point
+  map.on("click", function(evt) {
+    // clear any existing layers that are already on the map
+        routesLayer.clearLayers();
+        selectionLayer.clearLayers();
+        searchBuffer.clearLayers();
+        searchLayer.clearLayers();
+        endLayer.clearLayers();
+
+ var infoListItems = document
+      // .getElementById("info-list")
+      // .getElementsByTagName("li");
+
+
+ 
+// This geocodes the location where a marker is placed and then returned the value as textContent based on latlng. So it can be determined where the marker was placed either post-code or the road name.
+L.esri.Geocoding.reverseGeocode()
+       .latlng(evt.latlng)
+
+    // The first argument of the callback is for an error object. If an error occurred, it will be returned by the first err argument.
+    // The second argument of the callback is used for any successful response of the results. If no error occurred, err will be set to null and any successful result will be returned in the second argument.
+       .run(function(err, result, raw) {
+       console.log(raw);
+       // Get element by ID that is startWith and display the text assigned with each location when the results are loaded e.g. the address and post-code.
+       document.getElementById("startWith").textContent =
+          "You are at: " + raw.address.ShortLabel;
+});
+
+    // console.log(evt) Use turf to create a circular buffer around each marker. I have set the circumferences of the circle to be 1 mile long as most people living within mile would want to know where is their closest charing point.
+var lngLat = turf.point([evt.latlng.lng, evt.latlng.lat]);
+    // Return the result of the buffer in miles and at 1.33 mile the radius
+     searchBufferResult = turf.buffer(lngLat, 1.33, { units: "miles" });
+     searchBuffer = L.geoJson(searchBufferResult, {
+      // Then the resulting buffer is loaded in simple geojson file similar to FeatureCollection or any other data and styled. This is because the buffer would allow users to see whether charging points are within 1.33 mile radius so that can use which can be very useful for route planning.
+    style: {
+            color: "red",
+            fillOpacity: 0.09,
+            lineCap: "mitre",
+            dashArray: "20, 10",
+            weight: 2
+  }
+});
+    // Add the buffer to the map
+    searchBuffer.addTo(map);
+    // Fly to the buffer when clicked on the map
+    map.flyToBounds(searchBuffer.getBounds());
+
+// Loop through the data and find the route inside the buffer 
+    var pointsFeatures = points.features;
+    var pointsCollection = [];
+    for (i = 0; i < pointsFeatures.length; i++) {
+       var coordinates = pointsFeatures[i].geometry.coordinates;
+       pointsCollection.push(coordinates);
+    }
+    var searchLayerResult = turf.pointsWithinPolygon(
+       turf.points(pointsCollection),
+       turf.polygon(searchBufferResult.geometry.coordinates)
+);
+// If the search layer is within the cirle then add the icon to show where the map was click and the route to the nearest charing point
+    if (searchLayerResult.features.length > 0) {
+      // if a chariging point is within the buffer and use this icon below and show the car on the map.
+    var carIcon = L.icon({
+         iconUrl: 'car.png',
+         iconSize: [40, 40],
+         iconAnchor: [20, 20]
+});
+
+      // add an selection icon to the map
+      selectionLayer.addLayer(L.marker(evt.latlng, {
+          icon: carIcon
+        }));
+
+      // supply the location of the map click as a service parameter. These paramters are predefined by ESRI for multiple uses.
+      closestFacilityTask.setParam("incidents", evt.latlng);
+      closestFacilityTask.setParam("facilities", searchLayerResult);
+      // Get routes preferred for pedestrians
+      closestFacilityTask.setParam(
+        "restrictionAttributeNames",
+        "Preferred for Pedestrians"
+        // For example, preferred for pedesrains parameters will look for places where there is open public access
+      );
+      // and call the solver....this routes to the nearest point and colours it red. 
+      closestFacilityTask.run(function(err, res, raw) {
+        // draw the route feature that was returned as using the following styles. bascially draw the route only when it is inside the buffer.
+        console.log(err);
+    var routesFeature = res.routes.features[0];
+        routesLayer.addLayer(
+          L.geoJSON(routesFeature, {
+            style: {
+              color: "blue",
+              weight: 6,
+              opacity: 1
+      }
+    })
+  );
+}); 
+      // However, if the buffer could not find any charging point within its set radius then, return this statetment and show it on the page. I could not find a way to reset the statement when the charging point is found after mulitple clicks..
+    } else {
+      document.getElementById("startEnd").innerHTML =
+        "<i>The route will not be calcuated outside 1-mile radius of the charging points</i>";
+    }
+  });
+
+
+// ><><><><>< This code is for firebase data collection
+// set listener for click event on the map    
+map.on('click', function(e) {
+// create a marker
+var geojson = L.marker(e.latlng).toGeoJSON();
+
+// push the data into the database, set inline callback
+myDb.push(geojson, function(error) {
+
+  //if no error is returned to the callback, then it was loaded successfully
+  if (!error) { 
+    console.log("successfully added to firebase!");
+
+  // otherwise pass the error to the console
+  } else {
+    console.error(error);
+  }
+});
+
+
+});
+
+
+var theMarker = {};
+let GcarIcon = L.icon({
+      iconUrl: 'car.png', 
+      iconSize: [40, 40],
+      iconAnchor: [20, 20]
+    });
+
+// Set a click listern similary, the way it is set up above, except this is not linked to firebase. This is deliberately set this way in order to collect meaningful data. It was not possible to automatically hide the markers when the map is reloaded. Giving open access to the data can be problematic for map users as the map begins to look messy and if everyone is able to edit the map, then it is not longer as accurate way of collecting the data. Therefore, this marker is added whenever map is clicked on. These markers disappear when the map is reloaded. One disadvtage of this is that it collects the data regardless of whether the click is intended or not. Thus, the data can be flawed. 
+  map.on('click',function(e){
+    lat = e.latlng.lat;
+    lon = e.latlng.lng;
+
+    console.log("You clicked the map at LAT: "+ lat+" and LONG: "+lon );
+        //Clear existing marker, 
+
+        if (theMarker != undefined) {
+              // map.removeLayer(theMarker);
+        };
+
+    //Add a marker to show where you clicked, add the icon. 
+     theMarker = L.marker([lat,lon], {icon:GcarIcon}).addTo(map);  
+});
+// <>><><><><
+
+
+      }
+
+
+
+
+  // Initialize Firebase
+function initDb() {
+
+    // Add firebase data...it downloads firebase Javascript library//configures firebase connection//initialises the firebase object
+var config = {
+    apiKey: "AIzaSyBzBWOPrIDRBr1AKGr0RGBeNigI3U9AxsQ",
+    authDomain: "gisweek8project.firebaseapp.com",
+    databaseURL: "https://gisweek8project.firebaseio.com",
+    projectId: "gisweek8project",
+    storageBucket: "gisweek8project.appspot.com",
+    messagingSenderId: "674195042352"
+  };
+    firebase.initializeApp(config);
+  //sign in anonymously - this helps stop your database being abused
+   firebase.auth().signInAnonymously().catch(function(error) {
+  //if there's a problem, print the error to the console
+   console.log(error.message);
+});
+
+
+//global reference to your 'clicks' database
+myDb = firebase.database().ref().child('clicks');
+// Listener for when a location is added to the database - add it to the map as well
+myDb.on('child_added', function(snapshot) {
+
+    // get the click location from firebase as a GeoJson
+var newfeature = snapshot.val();
+   console.log(newfeature);
+
+
+// add a drag end listener to the array to update location
+          marker.on('dragend', 
+                  function(e) {
+              
+              // prepare the data to update in the database
+ var updates = {};
+                    updates['/clicks/' + snapshot.key] = e.target.toGeoJSON();
+              
+                   // update the point location in the database and callback to     console
+                   firebase.database().ref().update(updates, function(error) {
+                   if (!error) {
+                     console.log("successfully updated firebase!");
+                   } else {
+                     console.error(error);
+              }
+              });
+            });
+        });
+      }
+
+
+       
+/**
+            * Function which routes the user to the function which later determines which geojson points are shown. If the button with an id "BtnPoints is pressed, then execuate showPoints function, Otherwise show Toilets
+            */
+         function showPoints(button){
+              if(button.id==="BtnPoints"){
+              showPoints();
+              }
+
+              else{showToilets();
+              }
+            }
+
+  /**
+            * This function removes all points from the geojson layer, reloads the  showPoints and re-adds the click listener and also adds 
+            */
+         function showPoints(feature){
+              {
+              map.removeLayer(geojson);
+              // map.addLayer(geojson)
+              }
+
+
+
+
+
+
+
+
+// This desings the incon for toilets... these markers must be inside the ShowHostel to function otherwise they won't work.
+
+    let toiletsIcon = L.icon({
+               iconUrl: 'toilets.png', 
+               iconSize: [40, 40],
+               iconAnchor: [20, 20]
+  });
+// This returns the marker and adds the icon
+      function toiletIcon (feature,latlng) {
+                return L.marker(latlng, {icon: toiletsIcon})
+  };
+              // this adds the geojson for all of the locations to the map
+              geojson1 = L.geoJson(toilets, {
+
+                pointToLayer: toiletIcon,
+                  onEachFeature: function (f, l) {
+                  l.bindPopup('<pre>'+JSON.stringify(f.properties,null,' ').replace(/[\{\}"]/g,'')+'</pre>');
+  },
+              // onEachFeature: setMouseEvents, setClickEvents
+              }).addTo(map);
+              
+              // add listener for click event on the geojson layer
+              // geojson.on('click', setClickEvents);
+ }
+/**
+            * This function resets the geojson layer back to what was called in the initMap(); function with all points, and recalls the click listener
+            */
+    function showToilets(feature){
+               {
+               map.removeLayer(geojson);
+} 
+              let EcarIcon = L.icon({
+                 iconUrl: 'battery.png', 
+                 iconSize: [40, 40],
+                 iconAnchor: [20, 20]
+});
+   
+
+
+
+
+
+// This function corresponds to the "pointToLayer" below and draws icon, so that the marker can be clicked as well as routed to. 
+    function markerForEpoints (feature,latlng) {
+              return L.marker(latlng, {icon: EcarIcon})
+};
+
+              // this adds the geojson for all of the locations to the map
+                 geojson = L.geoJson(points, {
+                 pointToLayer: markerForEpoints,
+                // pointToLayer: function (feature, lnglat) {
+                // return L.circleMarker(lnglat, geojsonMarkerOptions(feature));},
+                 onEachFeature: function (f, l) {
+                 l.bindPopup('<pre>'+JSON.stringify(f.properties,null,' ').replace(/[\{\}"]/g,'')+'</pre>');
+                          },
+              // onEachFeature: setMouseEvents, setClickEvents
+}).addTo(map);
+              
+              // add listener for click event on the geojson layer
+              // geojson.on('click', setClickEvents);
+            
+ }  
+
+
+
+// This function flies to the corrdinates responding to the HTML above so when the button is clicked it zooms into there.
+
+  function York(){
+    //this one is broken because it uses lowercase "t"
+                   map.flyTo([53.956251, -1.091064], 13);
+  
+}
+
+function Bristol(){ 
+                   map.flyTo([55.145489, -6.522894], 11);
+}
+     
+// Please see the unfinished code in "incomplete.html"
+      </script>
+
+    </body>
+</html>
